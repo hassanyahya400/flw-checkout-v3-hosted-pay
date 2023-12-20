@@ -1,58 +1,40 @@
-import AmountInput from "../components/amountInput";
+import AmountCurrencyInput from "../components/amountCurrenctInput";
 import Input from "../components/input";
 import Spinner from "../components/spinner";
+import { useState } from "react";
 import { useFormik } from "formik";
 import { environments } from "../../data";
-import { useState } from "react";
 import { getEnvironmentData } from "../services/environmentDataService";
-import { generateReference, isNotNull } from "../helper/helper";
-import HttpService from "../services/httpService";
+import { generateCheckoutURL } from "../helper/helper";
 
 const PaymentDetails = () => {
-    const [ isLoading, setIsloading ] = useState(false);
+    const [ isLoading, setIsLoading ] = useState(false);
     const [ currentEnvironment, setCurrentEnvironment ] = useState("Staging");
-    const [ hostedLink, setHostedLink ] = useState(null);
-    
+    const [ hideSubmit, setHideSubmit ] = useState(false);
+    const [ checkoutURL, setCheckoutURL ] = useState(null);
 
+    const environmentData = getEnvironmentData(currentEnvironment);
+
+    const handleEnvironment = (environment) => {
+        setHideSubmit(false);
+        setCurrentEnvironment(environment);
+    }
+  
     const formik = useFormik({
         initialValues: {
+            amount: "100",
+            currency: "NGN",
             firstName: "HASSAN",
             lastName: "YAHYA",
+            phonenumber: "080123456789",
             email: "HASSAN.YAHYA@FLUTTERWAVE.COM",
-            currency: "NGN",
-            amount: "100",
-            phonenumber: "080123456789"
         }, 
-        onSubmit: async (values) => {
-            const environmentData = getEnvironmentData(currentEnvironment);
-            const data = {
-                tx_ref: generateReference(10),
-                amount: values.amount,
-                currency: values.currency,
-                redirect_url: "https:flutterwave.com/",
-                customer: {
-                    email: values.email,
-                    phonenumber: values.phonenumber,
-                    name: `${values.firstName} ${values.lastName}`
-                },
-            }
 
-            console.log(environmentData);
-            
-            const HostedPage = new HttpService(environmentData.api_base_url);
-            try {
-                setIsloading(true);
-                setHostedLink("https://checkout-testing.herokuapp.com/v3/hosted/pay/flwlnk-01hhz8axg5bdzre41xnd8qktwe");
-                const res = await HostedPage.post(
-                    "/v3/payments", 
-                    data, 
-                    {
-                        "Authorization": `Bearer ${environmentData.secret_key}`,
-                        "Content-Type": "application/json",
-                        "Accept": "*/*"
-                    }
-                )
-                console.log(res);
+        onSubmit: async (values) => {
+            try 
+            {
+                setIsLoading(true);
+                setCheckoutURL(generateCheckoutURL(environmentData, values));
             }
             catch (error)
             {
@@ -60,7 +42,10 @@ const PaymentDetails = () => {
             }
             finally
             {
-                setTimeout(() => setIsloading(false), 2000);
+                setTimeout(() => {
+                    setIsLoading(false);
+                    setHideSubmit(true);
+                }, 1100);
             }
         }
     });
@@ -68,7 +53,7 @@ const PaymentDetails = () => {
     return ( 
         <main className="w-full flex bg-slate-50">
             <div className="flex-1 flex items-center justify-center h-screen">
-                <div className="w-full max-w-md space-y-8 px-4  text-gray-600 sm:px-0">
+                <div className="w-full max-w-md space-y-6 px-4  text-gray-600 sm:px-0">
                     <div className="mt-5 space-y-2 text-center">
                         <h3 className="text-gray-800 text-2xl font-bold sm:text-3xl">Hosted pay</h3>
                         <p className="">Select an environment</p>
@@ -79,7 +64,7 @@ const PaymentDetails = () => {
                                 return (
                                     <button 
                                         key={environment} 
-                                        onClick={() => setCurrentEnvironment(environment)}
+                                        onClick={() => handleEnvironment(environment)}
                                         className={`flex items-center justify-center py-2.5 border rounded-lg hover:bg-gray-50 duration-150 active:bg-gray-100 ${environment == currentEnvironment ? 'border-indigo-600 text-indigo-600' : ''}`} >
                                         {environment}
                                     </button>
@@ -96,16 +81,18 @@ const PaymentDetails = () => {
                         onSubmit={formik.handleSubmit}
                         className="space-y-5"
                     >
-                        <AmountInput
+                        <AmountCurrencyInput
                             amountValue={formik.values.amount}
                             onAmountChange={formik.handleChange}
                             currencyValue={formik.values.currency}
                             onCurrencyChange={formik.handleChange}
+                            required
                         />
                         <Input 
                             name="firstName"
                             label="First name"
                             type="text"
+                            required
                             value={formik.values.firstName}
                             onChange={formik.handleChange}
                         />
@@ -113,38 +100,45 @@ const PaymentDetails = () => {
                             name="lastName"
                             label="Last name"
                             type="text"
+                            required
                             value={formik.values.lastName}
+                            onChange={formik.handleChange}
+                        />
+                        <Input 
+                            name="phonenumber"
+                            label="Phone"
+                            type="number"
+                            required
+                            value={formik.values.phonenumber}
                             onChange={formik.handleChange}
                         />
                         <Input 
                             name="email"
                             label="Email"
                             type="email"
+                            required
                             value={formik.values.email}
                             onChange={formik.handleChange}
                         />
                         
+                        { !hideSubmit ? 
                         <button
                             type="submit"
-                            className="w-full px-4 py-2 text-white font-medium bg-indigo-600 hover:bg-indigo-500 active:bg-indigo-600 rounded-lg duration-150"
+                            className="w-full mt-6 px-3 py-3 cursor-pointer text-white font-medium bg-indigo-600 hover:bg-indigo-500 active:bg-indigo-600 rounded-lg duration-150"
                         >
-                            {
-                                isLoading ? <Spinner /> : "Pay 💰"
-                            }
+                            {isLoading? <Spinner/> : "Pay with Flutterwave"}
                         </button>
-                        <div>
-                            {
-                                isNotNull(hostedLink) && <button
-                                type="submit"
-                                className="w-full px-4 py-2 text-white font-medium bg-indigo-600 hover:bg-indigo-500 active:bg-indigo-600 rounded-lg duration-150"
-                            >proceed</button>
-                            }
-                        </div>
+                        : 
+                        <a  
+                            href={checkoutURL}
+                            className="w-full mt-6 px-3 py-3 inline-block cursor-pointer text-white text-center font-medium bg-indigo-600 hover:bg-indigo-500 active:bg-indigo-600 rounded-lg duration-150"
+                        >
+                            Proceed
+                        </a> }
                     </form>
                 </div>
             </div>
         </main>
      );
 }
- 
 export default PaymentDetails;

@@ -4,7 +4,7 @@ import { currencies } from '../../data';
 // import HttpService from '../../services/httpService';
 
 
-const AmountInput = ({ amountValue, onAmountChange, currencyValue, onCurrencyChange, ...rest}) => {
+const AmountCurrencyInput = ({ amountValue, onAmountChange, currencyValue, onCurrencyChange, ...rest}) => {
     // const [ currencySymbol, setCurrencySymbol ] = useState("₦");
     
     
@@ -13,7 +13,7 @@ const AmountInput = ({ amountValue, onAmountChange, currencyValue, onCurrencyCha
                 <label className="text-gray-600">
                     Amount
                 </label>
-                <div className="relative mt-2 text-gray-500">
+                <div className="relative mt-1 text-gray-500">
                     <span className="h-6 text-gray-400 absolute left-3 inset-y-0 my-auto">
                         ₦
                     </span>
@@ -46,12 +46,12 @@ const AmountInput = ({ amountValue, onAmountChange, currencyValue, onCurrencyCha
     )
 }
  
-AmountInput.propTypes = {
-    amountValue: PropTypes.number,
+AmountCurrencyInput.propTypes = {
+    amountValue: PropTypes.string,
     onAmountChange: PropTypes.func,
     currencyValue: PropTypes.string,
     onCurrencyChange: PropTypes.func,
     
 }
 
-export default AmountInput;
+export default AmountCurrencyInput;
