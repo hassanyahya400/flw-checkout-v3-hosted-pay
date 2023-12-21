@@ -1,6 +1,6 @@
 export const generateReference = (length) => {
-    let reference = '';
-    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+    let reference = "";
+    const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
     const charactersLength = characters.length;
 
     for (let i = 0; i < length; i++) {
@@ -25,7 +25,7 @@ export const queryParamsToObject = (queryParamString) => {
       return parsedObject;
     } catch (error) {
       console.error("Error parsing query param string:", error);
-      return null; // Or handle the error differently as needed
+      return null; // Or handle the error differently as needed.
     }
 }
 
