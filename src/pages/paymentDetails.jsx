@@ -43,7 +43,7 @@ const PaymentDetails = () => {
             finally
             {
                 setTimeout(() => {
-                    setIsLoading(false);
+                    setIsLoading(false)
                     setHideSubmit(true);
                 }, 1100);
             }
@@ -131,9 +131,10 @@ const PaymentDetails = () => {
                         : 
                         <a  
                             href={checkoutURL}
+                            onClick={() => setIsLoading(true)}
                             className="w-full mt-6 px-3 py-3 inline-block cursor-pointer text-white text-center font-medium bg-indigo-600 hover:bg-indigo-500 active:bg-indigo-600 rounded-lg duration-150"
                         >
-                            Proceed
+                            {isLoading? <Spinner/> : "Proceed"}
                         </a> }
                     </form>
                 </div>
