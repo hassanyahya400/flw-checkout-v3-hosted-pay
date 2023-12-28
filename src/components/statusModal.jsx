@@ -10,8 +10,6 @@ const StatusModal = ({status, txRef, }) => {
         failed: "Transaction failed",
     }
 
-    console.log(status)
-
     return ( 
         <div tabIndex="-1" className={`bg-gray-50 overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-.5rem)] max-h-full ${isHidden && 'hidden'}`}>
             <div className="relative p-4 mx-auto w-full max-w-md max-h-full">
