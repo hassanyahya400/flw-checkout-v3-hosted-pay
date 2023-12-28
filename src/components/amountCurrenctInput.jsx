@@ -6,8 +6,7 @@ import { currencies } from '../../data';
 
 const AmountCurrencyInput = ({ amountValue, onAmountChange, currencyValue, onCurrencyChange, ...rest}) => {
     // const [ currencySymbol, setCurrencySymbol ] = useState("₦");
-    
-    
+
     return (
         <div>
                 <label className="text-gray-600">
@@ -45,13 +44,12 @@ const AmountCurrencyInput = ({ amountValue, onAmountChange, currencyValue, onCur
         </div>
     )
 }
- 
+
 AmountCurrencyInput.propTypes = {
     amountValue: PropTypes.string,
     onAmountChange: PropTypes.func,
     currencyValue: PropTypes.string,
     onCurrencyChange: PropTypes.func,
-    
 }
 
 export default AmountCurrencyInput;

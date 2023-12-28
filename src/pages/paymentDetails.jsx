@@ -19,7 +19,7 @@ const PaymentDetails = () => {
         setHideSubmit(false);
         setCurrentEnvironment(environment);
     }
-  
+
     const formik = useFormik({
         initialValues: {
             amount: "100",
@@ -129,7 +129,7 @@ const PaymentDetails = () => {
                             {isLoading? <Spinner/> : "Pay with Flutterwave"}
                         </button>
                         : 
-                        <a  
+                        <a
                             href={checkoutURL}
                             onClick={() => setIsLoading(true)}
                             className="w-full mt-6 px-3 py-3 inline-block cursor-pointer text-white text-center font-medium bg-indigo-600 hover:bg-indigo-500 active:bg-indigo-600 rounded-lg duration-150"
