@@ -53,9 +53,10 @@ const PaymentDetails = () => {
     return ( 
         <main className="w-full flex bg-slate-50">
             <div className="flex-1 flex items-center justify-center h-screen">
-                <div className="w-full max-w-md space-y-6 px-4  text-gray-600 sm:px-0">
+                <div className="w-full max-w-md space-y-6 px-4 pb-2 text-gray-600 border rounded-md">
+
                     <div className="mt-5 space-y-2 text-center">
-                        <h3 className="text-gray-800 text-2xl font-bold sm:text-3xl">Hosted pay</h3>
+                        <h3 className="text-gray-800 text-2xl font-bold sm:text-3xl">Checkout Factory 🏭</h3>
                         <p className="">Select an environment</p>
                     </div>
                     <div className="grid grid-cols-3 gap-x-3">
@@ -73,6 +74,7 @@ const PaymentDetails = () => {
                         }
                         
                     </div>
+
                     <div className="relative">
                         <span className="block w-full h-px bg-gray-300"></span>
                         <p className="inline-block w-fit text-sm bg-slate-50 px-2 absolute -top-2 inset-x-0 mx-auto">Enter your payment details</p>
@@ -87,6 +89,7 @@ const PaymentDetails = () => {
                             currencyValue={formik.values.currency}
                             onCurrencyChange={formik.handleChange}
                             required
+                            onSomething={"hellp"}
                         />
                         <Input 
                             name="firstName"
@@ -121,21 +124,23 @@ const PaymentDetails = () => {
                             onChange={formik.handleChange}
                         />
                         
-                        { !hideSubmit ? 
-                        <button
-                            type="submit"
-                            className="w-full mt-6 px-3 py-3 cursor-pointer text-white font-medium bg-indigo-600 hover:bg-indigo-500 active:bg-indigo-600 rounded-lg duration-150"
-                        >
-                            {isLoading? <Spinner/> : "Pay with Flutterwave"}
-                        </button>
-                        : 
-                        <a
-                            href={checkoutURL}
-                            onClick={() => setIsLoading(true)}
-                            className="w-full mt-6 px-3 py-3 inline-block cursor-pointer text-white text-center font-medium bg-indigo-600 hover:bg-indigo-500 active:bg-indigo-600 rounded-lg duration-150"
-                        >
-                            {isLoading? <Spinner/> : "Proceed"}
-                        </a> }
+                        <div className="pt-4 pb-4">
+                            { !hideSubmit ? 
+                            <button
+                                type="submit"
+                                className="w-full px-3 py-3 cursor-pointer text-white font-medium bg-indigo-600 hover:bg-indigo-500 active:bg-indigo-600 rounded-lg duration-150"
+                            >
+                                {isLoading? <Spinner/> : "Pay with Flutterwave"}
+                            </button>
+                            : 
+                            <a
+                                href={checkoutURL}
+                                onClick={() => setIsLoading(true)}
+                                className="w-full px-3 py-3 inline-block cursor-pointer text-white text-center font-medium bg-indigo-600 hover:bg-indigo-500 active:bg-indigo-600 rounded-lg duration-150"
+                            >
+                                {isLoading? <Spinner/> : "Proceed"}
+                            </a> }
+                        </div>
                     </form>
                 </div>
             </div>

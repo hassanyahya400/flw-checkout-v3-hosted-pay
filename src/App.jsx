@@ -9,6 +9,7 @@ function App() {
   try 
   {
     txResponse = JSON.parse(txResponse.resp);
+    console.log(txResponse, "tyuhgvbc")
   }
   catch (e)
   {
@@ -21,7 +22,7 @@ function App() {
   return (
     <>
       <StatusModal 
-        status={txResponse.status}
+        status={txResponse.data.status}
         txRef={txResponse.data.txRef}
       />
       <PaymentDetails/>
