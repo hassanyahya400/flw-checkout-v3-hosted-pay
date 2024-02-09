@@ -7,7 +7,7 @@ export const generateReference = (length) => {
         reference += characters.charAt(Math.floor(Math.random() * charactersLength));
     }
 
-    return "HSN-" + reference;
+    return "HSN/" + reference + "";
 }
 
 export const generateCheckoutURL = (environmentData, paymentData) => {
